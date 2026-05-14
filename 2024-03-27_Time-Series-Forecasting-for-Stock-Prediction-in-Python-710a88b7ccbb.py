@@ -29,7 +29,7 @@ def plot_moving_average(series, window, plot_intervals=False, scale=1.96):
     rolling_mean = series.rolling(window=window).mean()
     
     plt.figure(figsize=(17,8))
-    plt.title('Moving average\n window size = {}'.format(window))
+    plt.title(f'Moving average\n window size = {window}')
     plt.plot(rolling_mean, 'g', label='Rolling mean trend')
     
     #Plot confidence intervals for smoothed values
@@ -60,7 +60,7 @@ def plot_exponential_smoothing(series, alphas):
  
     plt.figure(figsize=(17, 8))
     for alpha in alphas:
-        plt.plot(exponential_smoothing(series, alpha), label='Alpha {}'.format(alpha))
+        plt.plot(exponential_smoothing(series, alpha), label=f'Alpha {alpha}')
     plt.plot(series.values, 'c', label = 'Actual')
     plt.title('Exponential Smoothing')
 
@@ -84,7 +84,7 @@ def plot_double_exponential_smoothing(series, alphas, betas):
     plt.figure(figsize=(17, 8))
     for alpha in alphas:
         for beta in betas:
-            plt.plot(double_exponential_smoothing(series, alpha, beta), label="Alpha {}, beta {}".format(alpha, beta))
+            plt.plot(double_exponential_smoothing(series, alpha, beta), label=f"Alpha {alpha}, beta {beta}")
     plt.plot(series.values, label = "Actual")
     plt.title("Double Exponential Smoothing")
 
