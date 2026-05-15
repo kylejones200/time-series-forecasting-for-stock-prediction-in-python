@@ -4,11 +4,9 @@
 
 
 
-from sklearn.metrics import median_absolute_error, mean_squared_error, mean_squared_log_error
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import seaborn as sns
 import statsmodels.api as sm
 import statsmodels.tsa.api as smt
 import yfinance as yf
@@ -96,7 +94,7 @@ def tsplot(y, lags=None, figsize=(12, 7), syle='bmh'):
         y = pd.Series(y)
         
     with plt.style.context(style='bmh'):
-        fig = plt.figure(figsize=figsize)
+        plt.figure(figsize=figsize)
         layout = (2,2)
         ts_ax = plt.subplot2grid(layout, (0,0), colspan=2)
         acf_ax = plt.subplot2grid(layout, (1,0))
@@ -104,7 +102,7 @@ def tsplot(y, lags=None, figsize=(12, 7), syle='bmh'):
         
         y.plot(ax=ts_ax)
         p_value = sm.tsa.stattools.adfuller(y)[1]
-        ts_ax.set_title('Time Series Analysis Plots\n Dickey-Fuller: p={0:.5f}'.format(p_value))
+        ts_ax.set_title(f'Time Series Analysis Plots\n Dickey-Fuller: p={p_value:.5f}')
         smt.graphics.plot_acf(y, lags=lags, ax=acf_ax)
         smt.graphics.plot_pacf(y, lags=lags, ax=pacf_ax)
         
