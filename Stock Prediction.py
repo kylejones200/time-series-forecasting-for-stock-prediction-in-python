@@ -31,9 +31,7 @@ def mean_absolute_percentage_error(y_true, y_pred):
     return np.mean(np.abs((y_true - y_pred) / y_true)) * 100
 
 
-import warnings
 
-warnings.filterwarnings("ignore")
 
 # %matplotlib inline  # Jupyter-only
 
@@ -255,7 +253,7 @@ def optimize_SARIMA(parameters_list, d, D, s):
                 order=(param[0], d, param[1]),
                 seasonal_order=(param[2], D, param[3], s),
             ).fit(disp=-1)
-        except:
+        except Exception:
             continue
 
         aic = model.aic
