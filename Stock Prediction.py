@@ -2,6 +2,7 @@
 
 Magics and shell lines are commented out. Run with a normal Python interpreter."""
 
+import warnings
 from itertools import product
 
 import matplotlib.pyplot as plt
@@ -11,7 +12,9 @@ import seaborn as sns
 import statsmodels.api as sm
 import statsmodels.tsa.api as smt
 import yfinance as yf
-from sklearn.metrics import mean_absolute_error
+from sklearn.metrics import (
+    mean_absolute_error,
+)
 from tqdm import tqdm_notebook
 
 
@@ -59,7 +62,7 @@ def optimize_SARIMA(parameters_list, d, D, s):
                 order=(param[0], d, param[1]),
                 seasonal_order=(param[2], D, param[3], s),
             ).fit(disp=-1)
-        except Exception:
+        except:
             continue
         aic = model.aic
         if aic < best_aic:
@@ -160,19 +163,31 @@ def tsplot(y, lags=None, figsize=(12, 7), syle="bmh"):
         plt.tight_layout()
 
 
-def main() -> None:
+def notebook_step_001() -> None:
     tesla = yf.Ticker("TSLA")
 
+
+def matplotlib_inline_jupyter_only() -> None:
     sns.set()
 
+    warnings.filterwarnings("ignore")
+
+
+def notebook_step_003() -> None:
     df = tesla.history(period="5y")
 
     df.head(10)
 
+
+def notebook_step_004() -> None:
     df.shape
 
+
+def notebook_step_005() -> None:
     df.dtypes
 
+
+def notebook_step_006() -> None:
     plt.figure(figsize=(17, 8))
 
     plt.plot(df["Close"])
@@ -187,24 +202,40 @@ def main() -> None:
 
     plt.show()
 
+
+def smooth_by_the_previous_5_days_by_week() -> None:
     plot_moving_average(df["Close"], 5)
 
+
+def smooth_by_the_previous_month_30_days() -> None:
     plot_moving_average(df["Close"], 30)
 
+
+def smooth_by_previous_quarter_90_days() -> None:
     plot_moving_average(df["Close"], 90, plot_intervals=True)
 
+
+def notebook_step_013() -> None:
     plot_exponential_smoothing(df["Close"], [0.05, 0.3])
 
+
+def notebook_step_016() -> None:
     plot_double_exponential_smoothing(
         df["Close"], alphas=[0.9, 0.02], betas=[0.9, 0.02]
     )
 
+
+def notebook_step_017() -> None:
     tsplot(df["Close"], lags=30)
 
+
+def notebook_step_018() -> None:
     data_diff = df["Close"] - df["Close"].shift(1)
 
     tsplot(data_diff[1:], lags=30)
 
+
+def set_initial_values_and_some_bounds() -> None:
     ps = range(0, 5)
 
     d = 1
@@ -225,8 +256,12 @@ def main() -> None:
 
     len(parameters_list)
 
+
+def save_best_model_aic_and_parameters() -> None:
     result_table = optimize_SARIMA(parameters_list, d, D, s)
 
+
+def set_parameters_that_give_the_lowest_aic_akaike_i() -> None:
     p, q, P, Q = result_table.parameters[0]
 
     best_model = sm.tsa.statespace.SARIMAX(
@@ -235,6 +270,8 @@ def main() -> None:
 
     print(best_model.summary())
 
+
+def make_a_shift_on_s_d_steps_because_these_values_w() -> None:
     print(best_model.predict(start=df["Close"].shape[0], end=df["Close"].shape[0] + 5))
 
     print(
@@ -243,6 +280,8 @@ def main() -> None:
         )
     )
 
+
+def notebook_step_023() -> None:
     comparison = pd.DataFrame(
         {
             "actual": [18.93, 19.23, 19.08, 19.17, 19.11, 19.12],
@@ -251,8 +290,12 @@ def main() -> None:
         index=pd.date_range(start="2018-06-05", periods=6),
     )
 
+
+def notebook_step_024() -> None:
     comparison.head()
 
+
+def notebook_step_025() -> None:
     plt.figure(figsize=(17, 8))
 
     plt.plot(comparison.actual)
@@ -270,6 +313,29 @@ def main() -> None:
     plt.grid(False)
 
     plt.show()
+
+
+def main() -> None:
+    notebook_step_001()
+    matplotlib_inline_jupyter_only()
+    notebook_step_003()
+    notebook_step_004()
+    notebook_step_005()
+    notebook_step_006()
+    smooth_by_the_previous_5_days_by_week()
+    smooth_by_the_previous_month_30_days()
+    smooth_by_previous_quarter_90_days()
+    notebook_step_013()
+    notebook_step_016()
+    notebook_step_017()
+    notebook_step_018()
+    set_initial_values_and_some_bounds()
+    save_best_model_aic_and_parameters()
+    set_parameters_that_give_the_lowest_aic_akaike_i()
+    make_a_shift_on_s_d_steps_because_these_values_w()
+    notebook_step_023()
+    notebook_step_024()
+    notebook_step_025()
 
 
 if __name__ == "__main__":
