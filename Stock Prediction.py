@@ -47,7 +47,6 @@ def mean_absolute_percentage_error(y_true, y_pred):
 def optimize_SARIMA(parameters_list, d, D, s):
     """
     Return dataframe with parameters and corresponding AIC
-
     parameters_list - list with (p, q, P, Q) tuples
     d - integration order
     D - seasonal integration order
@@ -62,13 +61,11 @@ def optimize_SARIMA(parameters_list, d, D, s):
                 order=(param[0], d, param[1]),
                 seasonal_order=(param[2], D, param[3], s),
             ).fit(disp=-1)
-        except:
+        except Exception:
             continue
         aic = model.aic
         if aic < best_aic:
-            best_model = model
             best_aic = aic
-            best_param = param
         results.append([param, model.aic])
     result_table = pd.DataFrame(results)
     result_table.columns = ["parameters", "aic"]
@@ -81,7 +78,6 @@ def optimize_SARIMA(parameters_list, d, D, s):
 def plot_SARIMA(series, model, n_steps):
     """
     Plot model vs predicted values
-
     series - dataset with time series
     model - fitted SARIMA model
     n_steps - number of steps to predict in the future
@@ -150,7 +146,7 @@ def tsplot(y, lags=None, figsize=(12, 7), syle="bmh"):
     if not isinstance(y, pd.Series):
         y = pd.Series(y)
     with plt.style.context(style="bmh"):
-        fig = plt.figure(figsize=figsize)
+        plt.figure(figsize=figsize)
         layout = (2, 2)
         ts_ax = plt.subplot2grid(layout, (0, 0), colspan=2)
         acf_ax = plt.subplot2grid(layout, (1, 0))
@@ -164,18 +160,16 @@ def tsplot(y, lags=None, figsize=(12, 7), syle="bmh"):
 
 
 def notebook_step_001() -> None:
-    tesla = yf.Ticker("TSLA")
+    yf.Ticker("TSLA")
 
 
 def matplotlib_inline_jupyter_only() -> None:
     sns.set()
-
     warnings.filterwarnings("ignore")
 
 
 def notebook_step_003() -> None:
     df = tesla.history(period="5y")
-
     df.head(10)
 
 
@@ -189,17 +183,11 @@ def notebook_step_005() -> None:
 
 def notebook_step_006() -> None:
     plt.figure(figsize=(17, 8))
-
     plt.plot(df["Close"])
-
     plt.title("Closing price of Tesla")
-
     plt.ylabel("Closing price ($)")
-
     plt.xlabel("Trading day")
-
     plt.grid(False)
-
     plt.show()
 
 
@@ -231,49 +219,33 @@ def notebook_step_017() -> None:
 
 def notebook_step_018() -> None:
     data_diff = df["Close"] - df["Close"].shift(1)
-
     tsplot(data_diff[1:], lags=30)
 
 
 def set_initial_values_and_some_bounds() -> None:
     ps = range(0, 5)
-
-    d = 1
-
     qs = range(0, 5)
-
     Ps = range(0, 5)
-
-    D = 1
-
     Qs = range(0, 5)
-
-    s = 5
-
     parameters = product(ps, qs, Ps, Qs)
-
     parameters_list = list(parameters)
-
     len(parameters_list)
 
 
 def save_best_model_aic_and_parameters() -> None:
-    result_table = optimize_SARIMA(parameters_list, d, D, s)
+    optimize_SARIMA(parameters_list, d, D, s)
 
 
 def set_parameters_that_give_the_lowest_aic_akaike_i() -> None:
     p, q, P, Q = result_table.parameters[0]
-
     best_model = sm.tsa.statespace.SARIMAX(
         df["Close"], order=(p, d, q), seasonal_order=(P, D, Q, s)
     ).fit(disp=-1)
-
     print(best_model.summary())
 
 
 def make_a_shift_on_s_d_steps_because_these_values_w() -> None:
     print(best_model.predict(start=df["Close"].shape[0], end=df["Close"].shape[0] + 5))
-
     print(
         mean_absolute_percentage_error(
             df["Close"][s + d :], best_model.fittedvalues[s + d :]
@@ -282,7 +254,7 @@ def make_a_shift_on_s_d_steps_because_these_values_w() -> None:
 
 
 def notebook_step_023() -> None:
-    comparison = pd.DataFrame(
+    pd.DataFrame(
         {
             "actual": [18.93, 19.23, 19.08, 19.17, 19.11, 19.12],
             "predicted": [18.96, 18.97, 18.96, 18.92, 18.94, 18.92],
@@ -297,21 +269,13 @@ def notebook_step_024() -> None:
 
 def notebook_step_025() -> None:
     plt.figure(figsize=(17, 8))
-
     plt.plot(comparison.actual)
-
     plt.plot(comparison.predicted)
-
     plt.title("Predicted closing price of New Germany Fund Inc (GF)")
-
     plt.ylabel("Closing price ($)")
-
     plt.xlabel("Trading day")
-
     plt.legend(loc="best")
-
     plt.grid(False)
-
     plt.show()
 
 

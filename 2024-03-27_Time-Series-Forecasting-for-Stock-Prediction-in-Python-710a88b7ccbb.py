@@ -1,6 +1,5 @@
 # Description: Short example for Time Series Forecasting for Stock Prediction in Python.
 
-
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -23,11 +22,9 @@ plt.show()
 def plot_moving_average(series, window, plot_intervals=False, scale=1.96):
 
     rolling_mean = series.rolling(window=window).mean()
-
     plt.figure(figsize=(17, 8))
     plt.title(f"Moving average\n window size = {window}")
     plt.plot(rolling_mean, "g", label="Rolling mean trend")
-
     # Plot confidence intervals for smoothed values
     if plot_intervals:
         mae = mean_absolute_error(series[window:], rolling_mean[window:])
@@ -107,7 +104,6 @@ def tsplot(y, lags=None, figsize=(12, 7), syle="bmh"):
         ts_ax = plt.subplot2grid(layout, (0, 0), colspan=2)
         acf_ax = plt.subplot2grid(layout, (1, 0))
         pacf_ax = plt.subplot2grid(layout, (1, 1))
-
         y.plot(ax=ts_ax)
         p_value = sm.tsa.stattools.adfuller(y)[1]
         ts_ax.set_title(f"Time Series Analysis Plots\n Dickey-Fuller: p={p_value:.5f}")
