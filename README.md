@@ -11,14 +11,7 @@ This project introduces common techniques to manipulate time series and make pre
 
 <figcaption>Photo by <a class="markup--anchor markup--figure-anchor" rel="photo-creator noopener" target="_blank">Charles Jackson</a> on <a class="markup--anchor markup--figure-anchor"
 
-## About
 
-Place the code for this article in this repository.
-The original article export is saved as `article.md`.
-
-## Files
-
-Add your `.ipynb`, `.py`, `.yaml`, `.js`, `.ts`, or other project files here.
 
 ## Disclaimer
 
